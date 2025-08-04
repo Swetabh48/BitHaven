@@ -4,19 +4,7 @@
 // import { Progress } from "@/components/ui/progress";
 // import { Textarea } from "@/components/ui/textarea";
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-
-
-export default async function Home(){
-
-  const payload=await getPayload({
-    config:configPromise,
-  })
-
-  const data=await payload.find({
-    collection:'users',
-  })
+export default function Home(){
 
   return (
     // <div className="p-4">
@@ -41,7 +29,7 @@ export default async function Home(){
     // </div>
     // </div>
     <div>
-      {JSON.stringify(data,null,2)}
+      HomePage
     </div>
   );
 }
