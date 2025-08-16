@@ -22,7 +22,7 @@ const Page=async({params}:Props)=>{
         <div>
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <Suspense fallback={<ProductListSkeletion/>}>
-                    <ProductList/>    
+                    <ProductList category={subcategory} />   
                 </Suspense>
             </HydrationBoundary>
         </div>
