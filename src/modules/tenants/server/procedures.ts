@@ -13,8 +13,8 @@ export const tenantsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const tenantsData = await ctx.db.find({
-        collection: "tags",
-        depth:1,
+        collection: "tenants",
+        depth:2,
         where: {
           slug: {
             equals: input.slug,
