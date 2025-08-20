@@ -11,7 +11,7 @@
     "generate:types": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
     "db:fresh": "payload migrate:fresh",
     "db:seed": " bun run src/seed.ts",
-    "db:reset":"bun run db:fresh && bun run db:seed"
+    "db:reset": "bun run db:fresh && bun run db:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -74,7 +74,8 @@
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
     "vaul": "^1.1.2",
-    "zod": "^4.0.17"
+    "zod": "^4.0.17",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
