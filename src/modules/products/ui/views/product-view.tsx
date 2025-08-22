@@ -90,7 +90,7 @@ export const ProductView =({ productId, tenantSlug }: Props) => {
                                     </p>
                                 </div>
                             </div>
-                            <div className="P-6 ">
+                            <div className="p-6 ">
                                 {data.description?(
                                     <p>{data.description}</p>
                                 ):(
@@ -128,7 +128,7 @@ export const ProductView =({ productId, tenantSlug }: Props) => {
                                         <div className="flex items-center gap-x-1 font-medium">
                                             <StarIcon className="size-4 fill-black"/>
                                             <p>({5})</p>
-                                            <p className="text-based">{5} ratings</p>
+                                            <p className="text-base">{5} ratings</p>
                                         </div>
                                     </div>
                                     <div 
