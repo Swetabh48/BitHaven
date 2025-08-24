@@ -1,6 +1,10 @@
+"use client";
+
 import { Sheet,SheetContent,SheetHeader,SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 
 interface NavbarItem{
@@ -17,6 +21,9 @@ interface Props{
 export const NavbarSidebar=({
     items,open,onOpenChange
 }:Props)=>{
+
+    const trpc=useTRPC();
+  const session=useQuery(trpc.auth.session.queryOptions());
     return(
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent
@@ -43,22 +50,34 @@ export const NavbarSidebar=({
                             {item.children}
                         </Link>
                     ))}
-                    <div className="border-t">
-                        <Link 
-                            onClick={()=>onOpenChange(false)}
-                            href="/sign-in"
-                            className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
-                        >
-                            Log in
-                        </Link>
-                        <Link 
-                            onClick={()=>onOpenChange(false)}
-                            href="/sign-up"
-                            className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
-                        >
-                            Start Selling
-                        </Link>
-                    </div>
+                {session.data?.user ? (
+                <div className="border-t">
+                   <Link 
+                        onClick={()=>onOpenChange(false)}
+                        href="/admin"
+                        className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                    >
+                        Dashboard
+                    </Link>
+                </div>
+                ):(
+                <div className="border-t">
+                    <Link 
+                        onClick={()=>onOpenChange(false)}
+                        href="/sign-in"
+                        className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                    >
+                        Log in
+                    </Link>
+                    <Link 
+                        onClick={()=>onOpenChange(false)}
+                        href="/sign-up"
+                        className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                    >
+                        Start Selling
+                    </Link>
+                </div>
+                )}
                 </ScrollArea>
             </SheetContent>
         </Sheet>

@@ -1,5 +1,6 @@
 import { getPayload } from "payload"
 import config from "@payload-config"
+import { stripe } from "./lib/stripe";
 const categories = [
   {
     name: "All",
@@ -134,10 +135,29 @@ const categories = [
       { name: "Macro", slug: "macro" },
     ],
   },
+  {
+  name: "Clothing",
+  color: "#A3D2CA",
+  slug: "clothing",
+  subcategories: [
+    { name: "Men's Wear", slug: "mens-wear" },
+    { name: "Women's Wear", slug: "womens-wear" },
+    { name: "Kids & Babies", slug: "kids-babies" },
+    { name: "Footwear", slug: "footwear" },
+    { name: "Accessories", slug: "accessories" },
+    { name: "Ethnic & Traditional", slug: "ethnic-traditional" },
+    { name: "Casual & Streetwear", slug: "casual-streetwear" },
+    { name: "Formal & Office Wear", slug: "formal-office-wear" },
+    { name: "Sports & Activewear", slug: "sports-activewear" },
+    { name: "Winter & Outerwear", slug: "winter-outerwear" },
+  ],
+}
 ]
 
 const seed = async () => {
   const payload = await getPayload({ config });
+
+  const adminAccount=await stripe.accounts.create({});
 
   //Create admin tenant
   const adminTenant = await payload.create({
@@ -145,8 +165,7 @@ const seed = async () => {
     data: {
       name: "admin",
       slug: "admin",
-      stripeAccountId: "test",
-      stripeDetailsSubmitted: true,
+      stripeAccountId: adminAccount.id,
     },
   })
 
