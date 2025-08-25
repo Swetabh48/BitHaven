@@ -6,6 +6,7 @@ import z from "zod";
 import { CheckoutMetadata, ProductMetadata } from "../types";
 import { stripe } from "@/lib/stripe";
 import { PLATFORM_FEE_PERCENT } from "@/constants";
+import { generateTenantURL } from "@/lib/utils";
 
 
 
@@ -144,10 +145,19 @@ export const checkoutRouter=createTRPCRouter({
             totalAmount*(PLATFORM_FEE_PERCENT/100)
         )
 
+        const domain=generateTenantURL(input.tenantSlug)
+
+        // if(process.env.NODE_ENV==="development"){
+        //     domain=`${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}`
+        // }
+        // else{
+        //     domain=`${input.tenantSlug}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+        // }
+
         const checkout=await stripe.checkout.sessions.create({
             customer_email:ctx.session.user.email,
-            success_url:`${process.env.NEXT_PUBLIC_APP_URL!}/tenants/${input.tenantSlug}/checkout?success=true`,
-            cancel_url:`${process.env.NEXT_PUBLIC_APP_URL!}/tenants/${input.tenantSlug}/checkout?cancel=true`,
+            success_url:`${domain}/checkout?success=true`,
+            cancel_url:`${domain}/checkout?cancel=true`,
             mode:"payment",
             line_items:lineItems,
             invoice_creation:{
