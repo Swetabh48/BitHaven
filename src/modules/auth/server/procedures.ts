@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCookie } from "../utils";
 import { stripe } from "@/lib/stripe";
+import { generateTenantURL } from "@/lib/utils";
+import { Tenant } from "@/payload-types";
 
 export const authRouter=createTRPCRouter({
     session:baseProcedure.query(async({ctx})=>{
@@ -12,6 +14,47 @@ export const authRouter=createTRPCRouter({
 
         return session;
     }),
+    getSessionRedirect: baseProcedure.query(async ({ ctx }) => {
+        const headers = await getHeaders();
+        const session = await ctx.db.auth({ headers });
+
+        // Default fallback URL
+        let redirectUrl = process.env.NEXT_PUBLIC_APP_URL || '/';
+
+        if (session.user) {
+            try {
+                // Get user's tenant information
+                const userWithTenants = await ctx.db.findByID({
+                    collection: 'users',
+                    id: session.user.id,
+                    depth: 2, // To populate tenant relationship
+                });
+
+                // If user has a tenant, redirect to their tenant homepage
+                if (userWithTenants.tenants && userWithTenants.tenants.length > 0) {
+                    const firstTenant = userWithTenants.tenants[0];
+                    if (firstTenant && typeof firstTenant.tenant === 'object' && firstTenant.tenant) {
+                        const tenant = firstTenant.tenant as Tenant;
+                        redirectUrl = generateTenantURL(tenant.slug);
+                    }
+                }
+            } catch (error) {
+                console.error('Error getting user tenant info:', error);
+                // Continue with default redirect URL
+            }
+        }
+
+        return {
+            redirectUrl,
+            isAuthenticated: !!session.user,
+            user: session.user ? {
+                id: session.user.id,
+                email: session.user.email,
+                username: session.user.username
+            } : null
+        };
+    }),
+    
     register:baseProcedure
     .input(
         registerSchema
