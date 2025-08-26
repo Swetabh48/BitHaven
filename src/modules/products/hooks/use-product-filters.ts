@@ -3,6 +3,11 @@ import { useQueryStates,parseAsArrayOf,parseAsString, parseAsStringLiteral} from
 const sortValues=["curated","trending","hot and new"] as const;
 
  const params={
+    search:parseAsString
+        .withOptions({
+            clearOnDefault:true,
+        })
+        .withDefault(""),
     sort:parseAsStringLiteral(sortValues).withDefault("curated"),
     minPrice:parseAsString
         .withOptions({
