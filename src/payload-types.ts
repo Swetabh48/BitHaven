@@ -193,7 +193,7 @@ export interface Tenant {
  */
 export interface Media {
   id: string;
-  tenant?: (string | null) | Tenant;   //remove in case of any error also 451
+  tenant?: (string | null) | Tenant;
   alt: string;
   updatedAt: string;
   createdAt: string;
