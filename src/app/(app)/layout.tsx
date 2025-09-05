@@ -5,7 +5,7 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "SalampuriaVendors",
+  title: "BitHaven",
   description: "Multi E-commerce Vendors",
 };
 
@@ -16,6 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Simple favicon using your single logo */}
+        <link rel="icon" href="/bithaven.png" />
+        </head>
       <body className="antialiased">
         <NuqsAdapter>
           <TRPCReactProvider>

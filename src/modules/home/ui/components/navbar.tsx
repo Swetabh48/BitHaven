@@ -10,6 +10,7 @@ import { useState } from "react";
 import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
 const poppins=Poppins({
     subsets:["latin"],
@@ -58,8 +59,16 @@ export const Navbar = () => {
     return (
     <nav className="h-20 flex items-center justify-between border-b bg-white px-6 font-medium">
       <Link href="/" className="flex items-center">
+        <Image
+          src="/bithaven.png"
+          alt="BitHaven Logo"
+          width={40}
+          height={40}
+          className="w-10 h-10"
+          priority
+        />
         <span className={cn("text-5xl font-semibold", poppins.className)}>
-          Salampuria
+          BitHaven
         </span>
       </Link>
 
